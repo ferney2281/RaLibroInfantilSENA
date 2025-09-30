@@ -1,0 +1,91 @@
+/* Imagen de fondo que cubre toda la pantalla */
+.bg-image {
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  width: 100vw;  /* Ocupa todo el ancho */
+  background-image: url('../../assets/images/fondoAutenticacion.png'); /* Cambia por tu imagen */
+  background-size: cover;        /* Ajusta la imagen para cubrir toda la pantalla */
+  background-position: center;   /* Centra la imagen */
+  background-repeat: no-repeat;  /* Evita repetir la imagen */
+}
+
+.card {
+  max-width: 600px;       /* Limita ancho máximo */
+  border-radius: 15px;
+  overflow: hidden;       /* Para bordes redondeados */
+  position: relative;     /* Para el overlay */
+  background-size: 50% auto;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.card-img {
+  width: 100%;
+  height: auto;           /* La card toma automáticamente el alto de la imagen */
+  display: block;
+}
+
+.card-img-top {
+  width: 70%;   /* Se ajusta al ancho de la card */
+  height: auto;  /* Mantiene proporción de la imagen */
+  display: block;
+   margin-top: 100px;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80%;
+  text-align: center;
+  padding: 0px;
+}
+
+.form-control {
+  width: 50%; /* Se adapta al ancho de la card */
+}
+
+
+.btn-logout {
+  width: 110px;               /* Ajusta tamaño del botón */
+  height: 110px;
+  background-image: url('../../assets/images/iniciar.png'); /* Imagen de fondo */
+  background-size: cover;    /* Que la imagen cubra todo el botón */
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;              /* Sin borde */
+  cursor: pointer;           /* Cambia el cursor al pasar sobre el botón */
+  border-radius: 8px;        /* Opcional, bordes redondeados */
+  background-color: transparent;
+}
+
+.btn-logout {
+  width: 160px;               /* Ajusta según necesites */
+  height: 160px;
+  background-image: url('../../assets/images/inicio.png'); /* Imagen de fondo */
+  background-size: cover;     /* La imagen cubre todo el botón */
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  
+  color: #fff;               /* Color del texto */
+  font-weight: bold;
+  text-align: center;        /* Centra horizontalmente */
+   
+}
+
+.card-overlay .form-control 
+{
+    border: 2px solid rgba(177,222,233,0.6); /* Borde semi-transparente */
+    background-color: rgba(90,113,149,0.8);
+    font-weight: bold;
+    color: rgba(255,255,255,0.7);
+}
+
+.card-overlay .form-control::placeholder {
+    /* Color del placeholder */
+  color: rgba(184, 233, 244, 0.6);
+}
