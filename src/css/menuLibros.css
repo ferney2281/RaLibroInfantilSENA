@@ -1,0 +1,258 @@
+/* Imagen de fondo para toda la página */
+body {
+  background-image: url('../../assets/images/fondoMenuLibros.png'); /* tu imagen */
+  background-size: cover;        /* se ajusta al tamaño de la ventana */
+  background-position: center;   /* centra la imagen */
+  background-repeat: no-repeat;  /* no se repite */
+  background-attachment: fixed;  /* opcional: mantiene la imagen fija al hacer scroll */
+  margin: 0;                     /* eliminar márgenes por defecto */
+  font-family: Arial, sans-serif;
+  color: #fff;                   /* texto blanco para que contraste */
+}
+
+
+
+/* Header con imagen de fondo propia */
+.header {
+  background-image: url('../../assets/images/fondoEncabezado.png') !important; /* cambia por tu imagen */
+  background-size: cover;        /* cubre todo el header */
+  background-position: center;   /* centra la imagen */
+  background-repeat: no-repeat;  /* no se repite */
+  width: 100%;
+  min-height: 150px;             /* aumenta la altura del header */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* mejora visibilidad del texto */
+  flex-direction: column;
+}
+
+/* Sidebar con imagen de fondo */
+.sidebar {
+  background-image: url('../../assets/images/fondoMenu.png'); /* tu imagen de la sidebar */
+   background-size: cover;        /* cubre todo el div */
+  background-position: top right;   /* centra la imagen */
+  background-repeat: no-repeat;  /* no se repite */
+  min-height:100vh;
+  margin-top: 15px;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+  background-color:transparent !important;
+  padding-left: 0px !important;
+}
+/* Sidebar */
+
+/* Contenido principal */
+.container {
+   background-image: url('../../assets/images/fondoCardLibros.png'); /* tu imagen de fondo */
+   background-size: cover;        /* cubre todo el div */
+   background-position: top center;   /* centra la imagen */
+   background-repeat: no-repeat;  /* no se repite */
+   min-height: 100vh;
+   background-color: rgba(255,252,240,0.2);
+   border-radius: 25px;           /* opcional: bordes redondeados */
+   margin-top: 15px;
+  
+}
+
+.container .row
+{
+  margin-left: 20px;
+}
+
+.col
+{
+  margin-top: 50px;
+}
+/* Ajustes de las cards para que se vean bien sobre el fondo */
+.card {
+  background-color: rgba(255,255,255,0.9); /* fondo semitransparente */
+  color: #000;
+}
+
+
+
+/* Contenido principal */
+.card-container {
+  padding: 20px;
+}
+
+/* Ajustes de las cards para que se vean bien sobre el fondo */
+.card {
+  background-color: rgba(255,255,255,0.9); /* fondo semitransparente */
+  color: #000;
+}
+
+.row
+{
+    padding-top: 5px;
+}
+
+
+.sidebar ul {
+   
+  margin: 80px 0px 0px 60px;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+.sidebar ul li a {
+  display: flex;             /* Flex para alinear icono y texto */
+  align-items: center;       /* Centra verticalmente */
+  text-decoration: none;
+  color: rgba(255,255,255,0.7);
+  font-size: larger;
+}
+
+.sidebar ul li a .icon {
+  width: 50px;               /* tamaño del icono */
+  height: 50px;
+  margin-right: 18px;         /* espacio entre icono y texto */
+}
+
+
+.header {
+  background-image: url('imagenes/header-bg.jpg'); /* imagen de fondo opcional */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 120px; /* puedes ajustar la altura */
+  position: relative;
+}
+
+/* Logotipo centrado */
+.logo-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* centra horizontalmente */
+}
+
+.logo {
+  height: 100px;
+  max-width: 100%;
+}
+
+/* Icono de usuario */
+.user-icon {
+  position: absolute;
+  right: 40px; /* pegado a la derecha */
+}
+
+.icon-user {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .header {
+    height: 90px;
+  }
+  .logo {
+    height: 60px;
+  }
+  .icon-user {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.custom-card {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  border-radius: 20px 20px 20px 20px;
+}
+
+.card
+{
+  margin: auto;
+}
+.card-img-top {
+  width: 100%;         /* ocupa todo el ancho de la card */
+  height: auto;        /* la altura se ajusta proporcionalmente */
+  object-fit: cover;   /* mantiene proporción sin deformar */
+  border: 3px solid #58c4eb;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.card-body
+{
+  
+  border-left: 3px solid #58c4eb;  /* borde izquierdo */
+  border-right: 3px solid #58c4eb;
+  border-top: 3px solid #58c4eb;
+  background-color: #16223a;
+  padding-top: 0px;
+}
+
+.card-footer {
+  background-color: #16223a;
+  border-left: 3px solid #58c4eb;  /* borde izquierdo */
+  border-right: 3px solid #58c4eb;
+  border-bottom: 3px solid #58c4eb;
+  border-radius: 0px 0px 20px 20px !important;
+  margin-top: auto;
+}
+
+.card-icon {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .card-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.card-title
+{
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  color:aliceblue;
+}
+
+.card-text
+{
+  text-align: center;
+  font-size: 12px;
+  color:#58c4eb;
+}
+
+.card-text span
+{
+  text-align: center;
+  font-size: 12px;
+  color:rgba(255,252,240,0.6);
+}
+
+.card-body hr
+{
+  text-align: center;
+  font-size: 12px;
+  border:1px solid rgba(88,196,235,1);
+  margin: 1px 0px 8px 0px;
+}
+
+.card-body button {
+  position: relative;
+  top:-20px;
+  left: 50%;         /* centrado horizontal */
+  transform: translateX(-50%);
+  z-index: 2;
+  background: #A3195B;
+  background: linear-gradient(1deg, rgba(163, 25, 91, 1) 25%, rgba(227, 6, 19, 1) 54%, rgba(233, 78, 27, 1) 70%, rgba(236, 101, 18, 1) 77%, rgba(243, 146, 0, 1) 91%);
+  border: 2px solid #f6a245;
+  font-weight: bold;
+}
