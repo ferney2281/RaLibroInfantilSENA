@@ -1,25 +1,126 @@
 <html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-</head>
-<body>
- 
-<a-scene mindar-image="imageTargetSrc: ../../assets/markers/portada/targets.mind;"
-color-space="sRGB" renderer="colorManagement: true,
-physicallyCorrectLights" vr-mode-ui="enabled: false"
-device-orientation-permission-ui="enabled: false">
- 
-<a-assets>
-<a-asset-item id="avatarModel" src="../../assets/3D/ballenaAzul.glb"></a-asset-item>
-</a-assets>
- 
-<a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
- 
-<a-entity mindar-image-target="targetIndex: 0">
-<a-gltf-model rotation="0 0 0 " position="0 -1 0" src="#avatarModel"></a-gltf-model>
-</a-entity>
-</a-scene>
-</body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-gesture-detector@3.3.0/dist/aframe-gesture-detector.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-super-hands-component@4.0.5/dist/aframe-super-hands.min.js"></script>
+
+    <style>
+      #botones-ui {
+        display: none;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 999;
+      }
+
+      #botones-ui button {
+        margin: 5px;
+        padding: 10px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <a-scene
+      mindar-image="imageTargetSrc: ../../assets/markers/portada/targets.mind;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+      embedded
+    >
+      <a-assets>
+        <a-asset-item id="avatarModel" src="../../assets/3D/ballenaAzul.glb"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 1.6 0" look-controls="enabled: false"></a-camera>
+
+      <!-- Target AR -->
+      <a-entity mindar-image-target="targetIndex: 0" id="target"></a-entity>
+
+      <!-- Modelo GLTF animado con gestos -->
+      <a-gltf-model
+        id="ballena"
+        rotation="0 0 0"
+        position="0 1 -15"
+        scale="1 1 1"
+        src="#avatarModel"
+        visible="false"
+        animation-mixer="loop: once; clampWhenFinished: true"
+        gesture-handler
+        gesture-rotate
+      ></a-gltf-model>
+    </a-scene>
+
+    <!-- Botones UI -->
+    <div id="botones-ui">
+      <button onclick="accion1()">Botón 1</button>
+      <button onclick="accion2()">Botón 2</button>
+    </div>
+
+    <script>
+      // Component para permitir rotación por gestos
+      AFRAME.registerComponent('gesture-rotate', {
+        schema: { enabled: { default: true } },
+        init: function () {
+          this.rotation = this.el.object3D.rotation;
+          this.el.sceneEl.addEventListener('onefingermove', (e) => {
+            if (!this.data.enabled) return;
+            const dx = e.detail.positionChange.x;
+            this.rotation.y += dx * 0.01;
+          });
+        }
+      });
+
+      // Component para manejar animación + UI
+      AFRAME.registerComponent('one-time-animation', {
+        init: function () {
+          const model = document.querySelector('#ballena');
+          const target = document.querySelector('#target');
+          const botones = document.getElementById('botones-ui');
+          let alreadyPlayed = false;
+
+          target.addEventListener('targetFound', () => {
+            const escaneador = document.querySelector('.scanning');
+            if (escaneador) escaneador.style.opacity = '0';
+
+            model.setAttribute('visible', 'true');
+
+            if (!alreadyPlayed) {
+              model.components['animation-mixer'].stopAction(); // Reset
+              model.components['animation-mixer'].playAction(); // Play
+              alreadyPlayed = true;
+
+              // Detectar fin de animación y mostrar botones
+              model.addEventListener('animation-finished', () => {
+                console.log('✅ Animación terminada');
+                botones.style.display = 'block';
+              });
+            }
+          });
+
+          target.addEventListener('targetLost', () => {
+            model.setAttribute('visible', 'true'); // Puedes cambiar a false si prefieres ocultarlo
+          });
+        }
+      });
+
+      // Activar componente
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('#target').setAttribute('one-time-animation', '');
+      });
+
+      // Acciones de los botones
+      function accion1() {
+        alert('Acción 1 ejecutada');
+      }
+
+      function accion2() {
+        alert('Acción 2 ejecutada');
+      }
+    </script>
+  </body>
 </html>
