@@ -25,13 +25,14 @@
   </head>
   <body>
     <a-scene
-      mindar-image="imageTargetSrc: ../../assets/markers/portada/targets.mind;"
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-      embedded
-    >
+  mindar-image="imageTargetSrc: ../../assets/markers/portada/targets.mind;"
+  color-space="sRGB"
+  renderer="colorManagement: true, physicallyCorrectLights"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false"
+  embedded
+  gesture-detector
+>
       <a-assets>
         <a-asset-item id="avatarModel" src="../../assets/3D/ballenaAzul.glb"></a-asset-item>
       </a-assets>
@@ -41,18 +42,24 @@
       <!-- Target AR -->
       <a-entity mindar-image-target="targetIndex: 0" id="target"></a-entity>
 
-      <!-- Modelo GLTF animado con gestos -->
-      <a-gltf-model
-        id="ballena"
+      <!-- Contenedor de rotación con el modelo adentro -->
+      <a-entity
+        id="modelo-contenedor"
         rotation="0 0 0"
-        position="0 1 -15"
+        position="0 1 -15"    
         scale="1 1 1"
-        src="#avatarModel"
-        visible="false"
-        animation-mixer="loop: once; clampWhenFinished: true"
         gesture-handler
-        gesture-rotate
-      ></a-gltf-model>
+        gesture-rotate="enabled: false"
+      >
+        <!-- Modelo GLTF animado -->
+        <a-gltf-model
+          id="ballena"
+          src="#avatarModel"
+          position="0 0 0"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+      </a-entity>
     </a-scene>
 
     <!-- Botones UI -->
@@ -62,18 +69,68 @@
     </div>
 
     <script>
-      // Component para permitir rotación por gestos
       AFRAME.registerComponent('gesture-rotate', {
-        schema: { enabled: { default: true } },
-        init: function () {
-          this.rotation = this.el.object3D.rotation;
-          this.el.sceneEl.addEventListener('onefingermove', (e) => {
-            if (!this.data.enabled) return;
-            const dx = e.detail.positionChange.x;
-            this.rotation.y += dx * 0.01;
-          });
-        }
-      });
+  schema: { enabled: { default: true } },
+
+  init: function () {
+    this.enabled = this.data.enabled;
+    this.rotation = this.el.object3D.rotation;
+
+    this.isMouseDown = false;
+    this.startX = 0;
+    this.startY = 0;
+
+    // Rotación táctil - usa movimiento en X para Yaw (rotar en Y) y en Y para Pitch (rotar en X)
+    this.el.sceneEl.addEventListener('onefingermove', (e) => {
+      if (!this.enabled) return;
+      const dx = e.detail.positionChange.x;
+      const dy = e.detail.positionChange.y;
+      this.rotation.y += dx * 0.01; // girar horizontal (yaw)
+      this.rotation.x += dy * 0.01; // girar vertical (pitch)
+      // Opcional: limitar rotación en X para no dar vuelta completa vertical
+      this.rotation.x = Math.min(Math.max(this.rotation.x, -Math.PI / 2), Math.PI / 2);
+    });
+
+    // Mouse down
+    this.onMouseDown = (e) => {
+      if (!this.enabled) return;
+      this.isMouseDown = true;
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+    };
+
+    // Mouse move: mueve en X para rotar en Y, y en Y para rotar en X
+    this.onMouseMove = (e) => {
+      if (!this.enabled || !this.isMouseDown) return;
+      const dx = e.clientX - this.startX;
+      const dy = e.clientY - this.startY;
+      this.rotation.y += dx * 0.005;
+      this.rotation.x += dy * 0.005;
+      this.rotation.x = Math.min(Math.max(this.rotation.x, -Math.PI / 2), Math.PI / 2);
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+    };
+
+    this.onMouseUp = () => {
+      this.isMouseDown = false;
+    };
+
+    window.addEventListener('mousedown', this.onMouseDown);
+    window.addEventListener('mousemove', this.onMouseMove);
+    window.addEventListener('mouseup', this.onMouseUp);
+  },
+
+  update: function () {
+    this.enabled = this.data.enabled;
+  },
+
+  remove: function () {
+    window.removeEventListener('mousedown', this.onMouseDown);
+    window.removeEventListener('mousemove', this.onMouseMove);
+    window.removeEventListener('mouseup', this.onMouseUp);
+  }
+});
+
 
       // Component para manejar animación + UI
       AFRAME.registerComponent('one-time-animation', {
@@ -81,6 +138,7 @@
           const model = document.querySelector('#ballena');
           const target = document.querySelector('#target');
           const botones = document.getElementById('botones-ui');
+          const contenedor = document.querySelector('#modelo-contenedor');
           let alreadyPlayed = false;
 
           target.addEventListener('targetFound', () => {
@@ -94,10 +152,15 @@
               model.components['animation-mixer'].playAction(); // Play
               alreadyPlayed = true;
 
-              // Detectar fin de animación y mostrar botones
+              // Detectar fin de animación
               model.addEventListener('animation-finished', () => {
                 console.log('✅ Animación terminada');
+
+                // Mostrar botones
                 botones.style.display = 'block';
+
+                // Activar rotación por gesto
+                contenedor.setAttribute('gesture-rotate', 'enabled: true');
               });
             }
           });
