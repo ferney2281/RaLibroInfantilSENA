@@ -218,10 +218,25 @@ div.titulo-superior img {
   gesture-detector
 >
       <a-assets>
-        <a-asset-item id="avatarModel" src="../../assets/3D/niño1_2_1.glb"></a-asset-item>
+        <a-asset-item id="avatarModel1" src="../../assets/3D/1.BallenaAzul_SA.glb"></a-asset-item>
+        <a-asset-item id="avatarModel2" src="../../assets/3D/2.BallenaGroenlandia.glb"></a-asset-item>
+        <a-asset-item id="avatarModel3" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
+        <a-asset-item id="avatarModel4" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
+        <a-asset-item id="avatarModel5" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
+        <a-asset-item id="avatarModel6" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
+        <a-asset-item id="avatarModel7" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
+        <a-asset-item id="avatarModel8" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
+        <a-asset-item id="avatarModel9" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
+        <a-asset-item id="avatarModel10" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
+      </a-assets>
+      <a-assets>
+        
       </a-assets>
 
-      <a-camera position="0 1.6 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 1.6 0" look-controls="enabled: false">
+        
+
+      </a-camera>
 
       <!-- Target AR -->
       <a-entity mindar-image-target="targetIndex: 0" id="target"></a-entity>
@@ -230,16 +245,87 @@ div.titulo-superior img {
       <a-entity
         id="modelo-contenedor"
         rotation="0 10 0"
-        position="7 -2 -40"    
-        scale="0.5 0.5 0.5"
+        position="-12 0 -30"    
+        scale="0.7 0.7 0.7"
         gesture-handler
         gesture-rotate="enabled: false"
       >
         <!-- Modelo GLTF animado -->
         <a-gltf-model
-          id="ballena"
-          src="#avatarModel"
+          id="ballena1"
+          rotation="0 -90 0"
+          src="#avatarModel1"
+          position="1.5 8 0"
+          scale="0.8 0.8 0.8"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+        <a-gltf-model
+          id="ballena2"
+          src="#avatarModel2"
+          position="0 4 0"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+        <a-gltf-model
+          id="ballena3"
+          src="#avatarModel3"
           position="0 0 0"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+        <a-gltf-model
+          id="ballena4"
+          src="#avatarModel4"
+          position="0 -4 0"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+        <a-gltf-model
+          id="ballena5"
+          src="#avatarModel5"
+          position="0 -8 0"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+
+        <a-gltf-model
+          id="ballena6"
+          rotation="0 170 0"
+          src="#avatarModel6"
+          position="40 8 0"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+        <a-gltf-model
+          id="ballena7"
+          rotation="0 170 0"
+          src="#avatarModel7"
+          position="40 4 0"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+        <a-gltf-model
+          id="ballena8"
+          rotation="0 170 0"
+          src="#avatarModel8"
+          position="40 0 0"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+        <a-gltf-model
+          id="ballena9"
+          rotation="0 170 0"
+          src="#avatarModel9"
+          position="40 -4 0"
+          visible="false"
+          animation-mixer="loop: once; clampWhenFinished: true"
+        ></a-gltf-model>
+        <a-gltf-model
+          id="ballena10"
+          rotation="0 170 0"
+          src="#avatarModel10"
+          position="40 -8 0"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
         ></a-gltf-model>
@@ -355,7 +441,16 @@ div.titulo-superior img {
       // Component para manejar animación + UI
       AFRAME.registerComponent('one-time-animation', {
         init: function () {
-          const model = document.querySelector('#ballena');
+          const model1 = document.querySelector('#ballena1');
+          const model2 = document.querySelector('#ballena2');
+          const model3 = document.querySelector('#ballena3');
+          const model4 = document.querySelector('#ballena4');
+          const model5 = document.querySelector('#ballena5');
+          const model6 = document.querySelector('#ballena6');
+          const model7 = document.querySelector('#ballena7');
+          const model8 = document.querySelector('#ballena8');
+          const model9 = document.querySelector('#ballena9');
+          const model10 = document.querySelector('#ballena10');
           const target = document.querySelector('#target');
           const botones = document.getElementById('botones-ui');
           const contenedor = document.querySelector('#modelo-contenedor');
@@ -365,15 +460,23 @@ div.titulo-superior img {
             const escaneador = document.querySelector('.scanning');
             if (escaneador) escaneador.style.opacity = '0';
 
-            model.setAttribute('visible', 'true');
-
+            model1.setAttribute('visible', 'true');
+            model2.setAttribute('visible', 'true');
+            model3.setAttribute('visible', 'true');
+            model4.setAttribute('visible', 'true');
+            model5.setAttribute('visible', 'true');
+            model6.setAttribute('visible', 'true');
+            model7.setAttribute('visible', 'true');
+            model8.setAttribute('visible', 'true');
+            model9.setAttribute('visible', 'true');
+            model10.setAttribute('visible', 'true');
             if (!alreadyPlayed) {
-              model.components['animation-mixer'].stopAction(); // Reset
-              model.components['animation-mixer'].playAction(); // Play
+              model1.components['animation-mixer'].stopAction(); // Reset
+              model1.components['animation-mixer'].playAction(); // Play
               alreadyPlayed = true;
 
               // Detectar fin de animación
-              model.addEventListener('animation-finished', () => {
+              model1.addEventListener('animation-finished', () => {
                 console.log('✅ Animación terminada');
 
                 // Mostrar botones
@@ -386,7 +489,7 @@ div.titulo-superior img {
           });
 
           target.addEventListener('targetLost', () => {
-            model.setAttribute('visible', 'true'); // Puedes cambiar a false si prefieres ocultarlo
+            model1.setAttribute('visible', 'true'); // Puedes cambiar a false si prefieres ocultarlo
           });
         }
       });
@@ -405,6 +508,113 @@ div.titulo-superior img {
         //alert('Acción 2 ejecutada');
       }
     </script>
+
+
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const target = document.querySelector("#target");
+    const modelos = document.querySelectorAll("#contenedor-modelos a-gltf-model");
+    const botones = document.getElementById("botones-ui");
+    let modelosActivados = false;
+
+    // 🎯 Mostrar modelos al detectar el marcador
+    target.addEventListener("targetFound", () => {
+      modelos.forEach((m) => {
+        m.setAttribute("visible", "true");
+        const anim = m.components["animation-mixer"];
+        if (anim) {
+          anim.stopAction();
+          anim.playAction();
+        }
+      });
+
+      if (!modelosActivados) {
+        botones.style.display = "flex";
+        modelosActivados = true;
+      }
+    });
+
+    // 🎯 NO ocultar modelos si se pierde el marcador
+    target.addEventListener("targetLost", () => {
+      modelos.forEach((m) => m.setAttribute("visible", "true"));
+    });
+
+    // 🟡 Cámara con cursor para detectar clics
+    const escena = document.querySelector("a-scene");
+    const camara = document.querySelector("a-camera");
+    if (!camara.querySelector("a-cursor")) {
+      const cursor = document.createElement("a-cursor");
+      cursor.setAttribute("rayOrigin", "mouse");
+      camara.appendChild(cursor);
+    }
+
+    // 🖱️ Hacer cada modelo clickeable
+    modelos.forEach((modelo, index) => {
+      modelo.addEventListener("click", () => {
+        console.log(`🟢 Modelo ${index + 1} clickeado`);
+        mostrarPanelModelo(index + 1);
+      });
+    });
+
+    // 🪟 Función para abrir el panel con información del modelo clickeado
+    const panel = document.getElementById("panelInfo");
+    const contenido = document.getElementById("contenidoPanel");
+    const cerrar = document.getElementById("cerrarPanel");
+
+    function mostrarPanelModelo(num) {
+      const textos = [
+        "Modelo 1: descripción o acción aquí.",
+        "Modelo 2: descripción o acción aquí.",
+        "Modelo 3: descripción o acción aquí.",
+        "Modelo 4: descripción o acción aquí.",
+        "Modelo 5: descripción o acción aquí.",
+        "Modelo 6: descripción o acción aquí.",
+        "Modelo 7: descripción o acción aquí.",
+        "Modelo 8: descripción o acción aquí.",
+        "Modelo 9: descripción o acción aquí.",
+        "Modelo 10: descripción o acción aquí."
+      ];
+
+      contenido.innerHTML = `
+        <h2 style="text-align:center;">${textos[num - 1]}</h2>
+        <p style="font-size:1rem;line-height:1.5;text-align:justify;color:#e0f7fa;font-family:'Open Sans',sans-serif;">
+          Puedes personalizar este texto para el modelo ${num}.
+        </p>`;
+      panel.classList.add("mostrar");
+    }
+
+    cerrar.addEventListener("click", () => {
+      panel.classList.remove("mostrar");
+    });
+
+    // 🔹 Botón flotante
+    document.querySelector(".btn-flotante").addEventListener("click", () => {
+      window.location.href = "pagina1.html";
+    });
+
+    // 🔹 Botón flecha
+    window.irAPagina = () => {
+      window.location.href = "portada.html";
+    };
+
+    // 🔹 Botón Libro
+    const btnLibro = document.getElementById("btnLibro");
+    btnLibro.addEventListener("click", () => {
+      contenido.innerHTML = `
+        <p style="font-size:1rem;line-height:1.5;text-align:justify;color:#e0f7fa;font-family:'Open Sans',sans-serif;">
+          Es la tierra, es la playa y es el océano Pacífico... (texto completo aquí)
+        </p>`;
+      panel.classList.add("mostrar");
+      panel.style.background = "rgba(10,25,47,0.7)";
+      panel.style.border = "2px solid rgba(0,229,255,0.3)";
+      panel.style.boxShadow = "0 0 25px rgba(0,229,255,0.4)";
+    });
+  });
+</script>
 
 <!-- <script>
   const btnLibro = document.getElementById('btnLibro');
