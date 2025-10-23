@@ -31,6 +31,7 @@
         border: 2px solid rgba(46, 60, 77, 1);
         box-shadow: 0 0 20px rgba(115, 216, 255, 0.6);
         color: #fff;
+        display: none;
       }
       #btnAutores
       {
@@ -86,7 +87,7 @@ div.titulo-superior img {
   top: 40%;                      /* centro vertical */
   left: 50%;                     /* centro horizontal */
   transform: translate(-50%, -50%) scale(0.8); /* centrado + animación suave */
-  width: 60%;                    /* ancho del panel (ajústalo a gusto) */
+  width: 40%;                    /* ancho del panel (ajústalo a gusto) */
   max-width: 800px;              /* límite de tamaño en pantallas grandes */
   min-height: 50%;               /* altura mínima */
   max-height: 80vh;              /* no más alto que 80% de la ventana */
@@ -373,7 +374,7 @@ div.titulo-superior img {
     <!-- Botones UI -->
     <div id="botones-ui">
       <button id="btnFlecha" class="btn-flecha" onclick="irAPagina()"></button>
-      <button id="btnLibro" onclick="accion1()">Libro</button>
+      <button id="btnLibro" onclick="accion1()">Juega y aprende</button>
     </div>
     <!--
     <div class="titulo-superior ">
@@ -400,6 +401,124 @@ div.titulo-superior img {
     </button>
 
 <script>
+
+
+
+
+const preguntas = [
+  { texto: "¿Dónde está la Ballena Azul?", respuesta: "ballena1" },
+  { texto: "¿Dónde está la Ballena Groenlandia?", respuesta: "ballena2" },
+  { texto: "¿Dónde está la Ballena Franca Glacial del Norte?", respuesta: "ballena3" },
+  { texto: "¿Dónde está la Ballena Jorobada?", respuesta: "ballena4" },
+  { texto: "¿Dónde está la Ballena Gris?", respuesta: "ballena5" },
+  { texto: "¿Dónde está el Rorcual de Aleta?", respuesta: "ballena6" },
+  { texto: "¿Dónde está el Rorcual Norteño?", respuesta: "ballena7" },
+  { texto: "¿Dónde está la Ballena Franca Austral?", respuesta: "ballena8" },
+  { texto: "¿Dónde está el Rorcual de Bryde?", respuesta: "ballena9" },
+  { texto: "¿Dónde está la Ballena Minke?", respuesta: "ballena10" }
+];
+
+let indicePregunta = 0;
+let respuestasUsuario = {};
+const panel = document.getElementById("panelInfo");
+const contenido = document.getElementById("contenidoPanel");
+
+window.accion1 = () => {
+  indicePregunta = 0;
+  respuestasUsuario = {};
+  mostrarPregunta();
+};
+
+function mostrarPregunta() {
+  const pregunta = preguntas[indicePregunta];
+  if (!pregunta) return mostrarBotonComprobar();
+
+  contenido.innerHTML = `
+    <h2>Pregunta ${indicePregunta + 1} de ${preguntas.length}</h2>
+    <p>${pregunta.texto}</p>
+    <p style="font-size: 0.9em; opacity: 0.8;">Haz clic en la ballena correcta.</p>
+  `;
+  panel.classList.add("mostrar");
+}
+
+function mostrarBotonComprobar() {
+  contenido.innerHTML = `
+    <h2>¡Has terminado!</h2>
+    <p>Pulsa el botón para comprobar tus respuestas.</p>
+    <button id="btnComprobar" style="
+      background: #0d6efd; color:white; border:none; padding:10px 20px;
+      border-radius:10px; font-size:16px; cursor:pointer;
+    ">Comprobar respuestas</button>
+  `;
+  document.getElementById("btnComprobar").addEventListener("click", comprobarRespuestas);
+}
+
+const modelos = document.querySelectorAll(".clickable");
+modelos.forEach(modelo => {
+  modelo.addEventListener("click", () => manejarSeleccion(modelo.id));
+});
+
+function manejarSeleccion(id) {
+  if (!panel.classList.contains("mostrar")) return; // Evita clics fuera del modo pregunta
+  const pregunta = preguntas[indicePregunta];
+  respuestasUsuario[pregunta.texto] = id;
+
+  // ✨ Efecto visual de selección
+  const modelo = document.getElementById(id);
+  modelo.setAttribute("material", "emissive: #00ffff; emissiveIntensity: 0.6");
+  setTimeout(() => modelo.removeAttribute("material"), 1000);
+
+  indicePregunta++;
+  mostrarPregunta();
+}
+
+function comprobarRespuestas() {
+  let correctas = 0;
+  let resultadoHTML = `<h2>Resultados</h2><ul>`;
+  preguntas.forEach(p => {
+    const elegida = respuestasUsuario[p.texto];
+    const esCorrecta = elegida === p.respuesta;
+    if (esCorrecta) correctas++;
+    resultadoHTML += `<li>${p.texto}: ${
+      esCorrecta
+        ? `<span style="color:#0f0;">✅ Correcta</span>`
+        : `<span style="color:#f33;">❌ (${elegida || "No elegida"})</span>`
+    }</li>`;
+  });
+  resultadoHTML += `</ul><p><b>${correctas}</b> de ${preguntas.length} correctas.</p>`;
+  contenido.innerHTML = resultadoHTML + `
+    <button id="btnCerrar" style="margin-top:10px; background:#555; color:white; padding:8px 16px; border:none; border-radius:10px;">Cerrar</button>
+  `;
+  document.getElementById("btnCerrar").addEventListener("click", () => {
+    panel.classList.remove("mostrar");
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
   function irAPagina() {
     window.location.href = "pagina1.html"; // cambia "pagina2.html" por tu destino
   }
@@ -538,13 +657,13 @@ div.titulo-superior img {
       });
 
       // Acciones de los botones
-      function accion1() {
+      //function accion1() {
         //alert('Acción 1 ejecutada');
-      }
+      //}
 
-      function accion2() {
+      //function accion2() {
         //alert('Acción 2 ejecutada');
-      }
+      //}
 
 
 
@@ -601,10 +720,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const modelos = await esperarModelos();
     refrescarRaycaster();
     console.log("🟢 Modelos listos:", modelos.map(m => m.id));
+
+    document.getElementById("btnLibro").style.display = "block";
   });
 
   // ✅ Click handler
-  const manejarClickRaycaster = () => {
+  /* const manejarClickRaycaster = () => {
     const raycaster = cursor.components?.raycaster;
     if (!raycaster) return;
     const intersecciones = raycaster.intersectedEls;
@@ -618,7 +739,7 @@ document.addEventListener("DOMContentLoaded", () => {
       contenido.innerHTML = `<h2>${primero.id}</h2><p>Contenido del modelo ${primero.id}.</p>`;
       panel.classList.add("mostrar");
     }
-  };
+  }; */
 
   // 🟣 Cerrar panel
   const cerrarPanel = document.getElementById("cerrarPanel");
@@ -710,7 +831,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Raycast manual y manejo del primer objeto intersectado
-    function doRaycastAndHandle(ndc) {
+    /* function doRaycastAndHandle(ndc) {
       mouse.set(ndc.x, ndc.y);
       raycaster.setFromCamera(mouse, threeCamera);
 
@@ -744,7 +865,46 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       return false;
+    } */
+
+    function doRaycastAndHandle(ndc) {
+  mouse.set(ndc.x, ndc.y);
+  raycaster.setFromCamera(mouse, threeCamera);
+
+  const clickable = getClickableEntities();
+  if (clickable.length === 0) return;
+
+  const objects = clickable.map(el => el.object3D);
+  const intersections = raycaster.intersectObjects(objects, true);
+
+  if (intersections && intersections.length) {
+    const first = intersections[0];
+    const hitEl = getEntityFromObject3D(first.object);
+
+    if (hitEl && hitEl.classList.contains("clickable")) {
+      console.log("✅ Modelo clickeado:", hitEl.id);
+
+      // ✅ En lugar de mostrar o cerrar panel, capturamos respuesta
+      manejarSeleccion(hitEl.id); // 👉 registra la respuesta actual
+
+      // ✨ efecto visual opcional (brillo rápido)
+      hitEl.setAttribute("material", "emissive: #00ffff; emissiveIntensity: 0.6");
+      setTimeout(() => hitEl.removeAttribute("material"), 800);
+
+      // Evita propagación del evento
+      return true;
     }
+  }
+  return false;
+}
+
+
+
+
+
+
+
+
 
     // Handler unificado para mousedown / touchstart
     function onPointerDown(ev) {
