@@ -221,8 +221,8 @@ div.titulo-superior img {
         <a-asset-item id="avatarModel1" src="../../assets/3D/1.BallenaAzul_SA.glb"></a-asset-item>
         <a-asset-item id="avatarModel2" src="../../assets/3D/2.BallenaGroenlandia.glb"></a-asset-item>
         <a-asset-item id="avatarModel3" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
-        <a-asset-item id="avatarModel4" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
-        <a-asset-item id="avatarModel5" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
+        <a-asset-item id="avatarModel4" src="../../assets/3D/4.BallenaJorobada.glb"></a-asset-item>
+        <a-asset-item id="avatarModel5" src="../../assets/3D/5.BallenaGris.glb"></a-asset-item>
         <a-asset-item id="avatarModel6" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
         <a-asset-item id="avatarModel7" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
         <a-asset-item id="avatarModel8" src="../../assets/3D/14-07-2025_2.glb"></a-asset-item>
@@ -233,10 +233,18 @@ div.titulo-superior img {
         
       </a-assets>
 
-      <a-camera position="0 1.6 0" look-controls="enabled: false">
-        
+      
 
-      </a-camera>
+     
+
+
+<a-camera position="0 1.6 0" look-controls="enabled: false">
+  <a-entity
+    id="mouse-cursor"
+    cursor="rayOrigin: mouse"
+    raycaster="objects: [data-raycastable]; far: 1000;"
+  ></a-entity>
+</a-camera>
 
       <!-- Target AR -->
       <a-entity mindar-image-target="targetIndex: 0" id="target"></a-entity>
@@ -251,21 +259,28 @@ div.titulo-superior img {
         gesture-rotate="enabled: false"
       >
         <!-- Modelo GLTF animado -->
+        
+
         <a-gltf-model
           id="ballena1"
-          rotation="0 -90 0"
           src="#avatarModel1"
           position="1.5 8 0"
           scale="0.8 0.8 0.8"
+          rotation="0 -90 0"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
-        ></a-gltf-model>
+          class="clickable"
+          data-raycastable
+        >
+        </a-gltf-model>
         <a-gltf-model
           id="ballena2"
           src="#avatarModel2"
           position="0 4 0"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
+          class="clickable"
+          data-raycastable
         ></a-gltf-model>
         <a-gltf-model
           id="ballena3"
@@ -273,20 +288,28 @@ div.titulo-superior img {
           position="0 0 0"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
+          class="clickable"
+          data-raycastable
         ></a-gltf-model>
         <a-gltf-model
           id="ballena4"
           src="#avatarModel4"
-          position="0 -4 0"
+          position="3.5 -4 0"
+          scale="0.9 0.9 0.9"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
+          class="clickable"
+          data-raycastable
         ></a-gltf-model>
         <a-gltf-model
           id="ballena5"
           src="#avatarModel5"
-          position="0 -8 0"
+          position="1 -7 0"
+          scale="0.8 0.8 0.8"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
+          class="clickable"
+          data-raycastable
         ></a-gltf-model>
 
         <a-gltf-model
@@ -296,6 +319,8 @@ div.titulo-superior img {
           position="40 8 0"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
+          class="clickable"
+          data-raycastable
         ></a-gltf-model>
         <a-gltf-model
           id="ballena7"
@@ -304,6 +329,8 @@ div.titulo-superior img {
           position="40 4 0"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
+          class="clickable"
+          data-raycastable
         ></a-gltf-model>
         <a-gltf-model
           id="ballena8"
@@ -312,6 +339,8 @@ div.titulo-superior img {
           position="40 0 0"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
+          class="clickable"
+          data-raycastable
         ></a-gltf-model>
         <a-gltf-model
           id="ballena9"
@@ -320,6 +349,8 @@ div.titulo-superior img {
           position="40 -4 0"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
+          class="clickable"
+          data-raycastable
         ></a-gltf-model>
         <a-gltf-model
           id="ballena10"
@@ -328,6 +359,8 @@ div.titulo-superior img {
           position="40 -8 0"
           visible="false"
           animation-mixer="loop: once; clampWhenFinished: true"
+          class="clickable"
+          data-raycastable
         ></a-gltf-model>
       </a-entity>
     </a-scene>
@@ -507,303 +540,261 @@ div.titulo-superior img {
       function accion2() {
         //alert('Acción 2 ejecutada');
       }
+
+
+
+
+      
+
+
+
     </script>
 
 
 
 
-
-
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const target = document.querySelector("#target");
-    const modelos = document.querySelectorAll("#contenedor-modelos a-gltf-model");
-    const botones = document.getElementById("botones-ui");
-    let modelosActivados = false;
+document.addEventListener("DOMContentLoaded", () => {
+  const scene = document.querySelector("a-scene");
+  const cursor = document.querySelector("#mouse-cursor");
+  const target = document.querySelector("#target");
 
-    // 🎯 Mostrar modelos al detectar el marcador
-    target.addEventListener("targetFound", () => {
-      modelos.forEach((m) => {
-        m.setAttribute("visible", "true");
-        const anim = m.components["animation-mixer"];
-        if (anim) {
-          anim.stopAction();
-          anim.playAction();
-        }
-      });
+  // ⚙️ Configurar raycaster
+  cursor.setAttribute("raycaster", {
+    objects: ".clickable, [data-raycastable]",
+    far: 1000,
+    recursive: true
+  });
 
-      if (!modelosActivados) {
-        botones.style.display = "flex";
-        modelosActivados = true;
-      }
-    });
+  // ✅ Esperar modelos cargados
+  const esperarModelos = async () => {
+    const modelos = Array.from(document.querySelectorAll(".clickable"));
+    if (modelos.length === 0) return [];
+    await Promise.all(
+      modelos.map(
+        m =>
+          new Promise(resolve => {
+            if (m.hasLoaded) return resolve();
+            m.addEventListener("model-loaded", resolve, { once: true });
+          })
+      )
+    );
+    return modelos;
+  };
 
-    // 🎯 NO ocultar modelos si se pierde el marcador
-    target.addEventListener("targetLost", () => {
-      modelos.forEach((m) => m.setAttribute("visible", "true"));
-    });
-
-    // 🟡 Cámara con cursor para detectar clics
-    const escena = document.querySelector("a-scene");
-    const camara = document.querySelector("a-camera");
-    if (!camara.querySelector("a-cursor")) {
-      const cursor = document.createElement("a-cursor");
-      cursor.setAttribute("rayOrigin", "mouse");
-      camara.appendChild(cursor);
+  // ✅ Refrescar raycaster
+  const refrescarRaycaster = () => {
+    if (cursor.components?.raycaster) {
+      cursor.components.raycaster.refreshObjects();
+      console.log("🔵 Raycaster actualizado.");
     }
+  };
 
-    // 🖱️ Hacer cada modelo clickeable
-    modelos.forEach((modelo, index) => {
-      modelo.addEventListener("click", () => {
-        console.log(`🟢 Modelo ${index + 1} clickeado`);
-        mostrarPanelModelo(index + 1);
-      });
-    });
+  // 🟢 Target detectado
+  target.addEventListener("targetFound", async () => {
+    console.log("📸 Target detectado. Esperando modelos...");
+    const modelos = await esperarModelos();
+    refrescarRaycaster();
+    console.log("🟢 Modelos listos:", modelos.map(m => m.id));
+  });
 
-    // 🪟 Función para abrir el panel con información del modelo clickeado
-    const panel = document.getElementById("panelInfo");
-    const contenido = document.getElementById("contenidoPanel");
-    const cerrar = document.getElementById("cerrarPanel");
+  // ✅ Click handler
+  const manejarClickRaycaster = () => {
+    const raycaster = cursor.components?.raycaster;
+    if (!raycaster) return;
+    const intersecciones = raycaster.intersectedEls;
+    if (!intersecciones || intersecciones.length === 0) return;
 
-    function mostrarPanelModelo(num) {
-      const textos = [
-        "Modelo 1: descripción o acción aquí.",
-        "Modelo 2: descripción o acción aquí.",
-        "Modelo 3: descripción o acción aquí.",
-        "Modelo 4: descripción o acción aquí.",
-        "Modelo 5: descripción o acción aquí.",
-        "Modelo 6: descripción o acción aquí.",
-        "Modelo 7: descripción o acción aquí.",
-        "Modelo 8: descripción o acción aquí.",
-        "Modelo 9: descripción o acción aquí.",
-        "Modelo 10: descripción o acción aquí."
-      ];
-
-      contenido.innerHTML = `
-        <h2 style="text-align:center;">${textos[num - 1]}</h2>
-        <p style="font-size:1rem;line-height:1.5;text-align:justify;color:#e0f7fa;font-family:'Open Sans',sans-serif;">
-          Puedes personalizar este texto para el modelo ${num}.
-        </p>`;
+    const primero = intersecciones[0];
+    if (primero.classList.contains("clickable")) {
+      console.log("✅ Clic detectado en:", primero.id);
+      const panel = document.getElementById("panelInfo");
+      const contenido = document.getElementById("contenidoPanel");
+      contenido.innerHTML = `<h2>${primero.id}</h2><p>Contenido del modelo ${primero.id}.</p>`;
       panel.classList.add("mostrar");
     }
+  };
 
-    cerrar.addEventListener("click", () => {
-      panel.classList.remove("mostrar");
-    });
-
-    // 🔹 Botón flotante
-    document.querySelector(".btn-flotante").addEventListener("click", () => {
-      window.location.href = "pagina1.html";
-    });
-
-    // 🔹 Botón flecha
-    window.irAPagina = () => {
-      window.location.href = "portada.html";
-    };
-
-    // 🔹 Botón Libro
-    const btnLibro = document.getElementById("btnLibro");
-    btnLibro.addEventListener("click", () => {
-      contenido.innerHTML = `
-        <p style="font-size:1rem;line-height:1.5;text-align:justify;color:#e0f7fa;font-family:'Open Sans',sans-serif;">
-          Es la tierra, es la playa y es el océano Pacífico... (texto completo aquí)
-        </p>`;
-      panel.classList.add("mostrar");
-      panel.style.background = "rgba(10,25,47,0.7)";
-      panel.style.border = "2px solid rgba(0,229,255,0.3)";
-      panel.style.boxShadow = "0 0 25px rgba(0,229,255,0.4)";
-    });
-  });
-</script>
-
-<!-- <script>
-  const btnLibro = document.getElementById('btnLibro');
-  const btnAutores = document.getElementById('btnAutores');
-  const panel = document.getElementById('panelInfo');
-  const cerrar = document.getElementById('cerrarPanel');
-  const contenido = document.getElementById('contenidoPanel');
-
-  // Mostrar panel con contenido dinámico
-  /*btnLibro.addEventListener('click', () => {
-    contenido.innerHTML = `
-      <h2>El Libro</h2>
-      <p>“El vuelo de las jorobadas” es una experiencia en realidad aumentada
-      que invita al usuario a descubrir el viaje de las ballenas a través de la imaginación y la tecnología.</p>
-    `;
-    panel.classList.add('mostrar');
-  });*/
-
-
-  btnLibro.addEventListener('click', () => {
-  // Cambiar contenido
-  contenido.innerHTML = `
-     
-    </h2>
-    <p style="
-      font-size: 1rem;
-      line-height: 1.5;
-      text-align: justify;
-      color: #e0f7fa;
-      font-family: 'Open Sans', sans-serif;
-    ">
-          Es la tierra, es la playa y es el océano Pacífico. Las cosas se elevan del suelo debido a las constantes inundaciones, los niños y niñas juegan con la arena y a la hora del almuerzo huele a guiso, plátano frito y mariscos. Suena la marimba de chonta y luego el chaparrón. De noche cantan las ranas y brilla en el agua el plancton luminoso, constelaciones flotantes. A primera hora del día llegan las lanchas a recoger a los viajeros que quieren ver a las ballenas.
-          <br><br>
-          Es un privilegio tenerlas en casa cada año. En menos de 20 minutos, el lanchero avisa las nubes de vapor que producen los gigantes cuando salen a respirar. Es posible acercarse un poco más, pero con cautela para no perturbarlas con el ruido del motor. Entonces se ve el despliegue de sus alas para hacer un vuelo mínimo sobre el agua, con todo su peso, su esplendor. Por su color, sus aletas parecen olas. Conocerlas así, en libertad, produce respeto y felicidad. 
-          <br><br>
-          Su larguísimo viaje se repetirá hasta el final de sus días. Los machos tal vez exploden otros destinos, pero las hembras seguirán fielmente su ruta al Pacífico. No hay mejor lugar en el mundo para reproducirse y tener a sus hijos. Es su tradición, su cultura y la transmitirán de generación en generación mientras estas aguas sigan siendo pacíficas y limpias. Aguas de brazos abiertos. Las jorobadas eran perseverantes para no perder sus raíces. Raíces que compartimos con ellas. Ellas son nuestro espejo en el mar. 
-    </p>
-  `;
-
-  // Mostrar el panel
-  panel.classList.add('mostrar');
-
-  // Aplicar estilos directamente al panel
-  panel.style.background = 'rgba(10, 25, 47, 0.7)';
-  panel.style.border = '2px solid rgba(0, 229, 255, 0.3)';
-  panel.style.boxShadow = '0 0 25px rgba(0, 229, 255, 0.4)';
-  panel.style.borderRadius = '20px';
-  panel.style.padding = '30px';
-  panel.style.transition = 'all 0.5s ease';
-});
-
-  /*btnAutores.addEventListener('click', () => {
-    contenido.innerHTML = `
-      <h2>Autores</h2>
-      <p>Proyecto creado por un equipo interdisciplinario apasionado por la educación,
-      la animación 3D y las experiencias inmersivas.</p>
-    `;
-    panel.classList.add('mostrar');
-  });*/
-
-  btnAutores.addEventListener('click', () => {
-  // Contenido con estilos en línea
-  contenido.innerHTML = `
-    <h2 style="
-      color: rgba(243, 146, 0, 1);
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.5rem;
-      text-align: center;
-      margin-bottom: 15px;
-    ">
-      Autores
-    </h2>
-    <p style="
-      font-size: 1.1rem;
-      line-height: 1.6;
-      text-align: justify;
-      color: #E0F7FA;
-      font-family: 'Open Sans', sans-serif;
-    ">
-      <span style="font-weight: bold; color:#FFD84D">Sobre la autora y el ilustrador</span>
-      <br><br>
-      La autora de El vuelo de las jorobas se llama Catalina Toro Restrepo. Ella es una escritora colombiana a la que le encanta la naturaleza, los animales y el mar. Catalina escribió este libro para contarnos la gran aventura que viven las ballenas jorobadas cuando viajan desde las frías aguas del sur hasta el cálido océano colombiano. Con palabras llenas de poesía y ternura, nos enseña a cuidar el planeta y a admirar la fuerza de estos maravillosos animales.
-      <br><br>
-      El ilustrador del libro es José Rosero, un artista que usa los colores y las formas para dar vida a las historias. Sus dibujos hacen que las páginas se llenen de movimiento, alegría y emoción. Gracias a su arte, podemos imaginar el mar, las ballenas y todo su viaje como si estuviéramos allí, nadando junto a ellas.
-      <br><br>
-      Juntos, Catalina y José crearon un libro hermoso que nos invita a soñar, aprender y amar a la naturaleza.
-    </p>
-  `;
-
-  // Mostrar el panel
-  panel.classList.add('mostrar');
-
-  // Estilos dinámicos del panel (mismo estilo base que el de "Libro")
-  panel.style.background = 'rgba(163, 25, 91, 0.7)'; // tono más rosado/púrpura
-  panel.style.border = '2px solid rgba(255, 102, 204, 0.4)';
-  panel.style.boxShadow = '0 0 20px rgba(243, 146, 0, 1)';
-  panel.style.borderRadius = '20px';
-  panel.style.padding = '30px';
-  panel.style.transition = 'all 0.5s ease';
-});
-
-
-  // Cerrar panel
-  cerrar.addEventListener('click', () => {
-    panel.classList.remove('mostrar');
-  });
-</script> -->
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const btnLibro = document.getElementById('btnLibro');
-  const btnAutores = document.getElementById('btnAutores');
-  const panel = document.getElementById('panelInfo');
-  const cerrar = document.getElementById('cerrarPanel');
-  const contenido = document.getElementById('contenidoPanel');
-
-  // 🟦 BOTÓN LIBRO
-  btnLibro.addEventListener('click', () => {
-    contenido.innerHTML = `
-      <p style="
-        font-size: 1rem;
-        line-height: 1.5;
-        text-align: justify;
-        color: #e0f7fa;
-        font-family: 'Open Sans', sans-serif;
-      ">
-        Es la tierra, es la playa y es el océano Pacífico. Las cosas se elevan del suelo debido a las constantes inundaciones, los niños y niñas juegan con la arena y a la hora del almuerzo huele a guiso, plátano frito y mariscos. Suena la marimba de chonta y luego el chaparrón. De noche cantan las ranas y brilla en el agua el plancton luminoso, constelaciones flotantes. A primera hora del día llegan las lanchas a recoger a los viajeros que quieren ver a las ballenas.
-        <br><br>
-        Es un privilegio tenerlas en casa cada año. En menos de 20 minutos, el lanchero avisa las nubes de vapor que producen los gigantes cuando salen a respirar. Es posible acercarse un poco más, pero con cautela para no perturbarlas con el ruido del motor. Entonces se ve el despliegue de sus alas para hacer un vuelo mínimo sobre el agua, con todo su peso, su esplendor. Por su color, sus aletas parecen olas. Conocerlas así, en libertad, produce respeto y felicidad. 
-        <br><br>
-        Su larguísimo viaje se repetirá hasta el final de sus días. Los machos tal vez exploren otros destinos, pero las hembras seguirán fielmente su ruta al Pacífico. No hay mejor lugar en el mundo para reproducirse y tener a sus hijos. Es su tradición, su cultura y la transmitirán de generación en generación mientras estas aguas sigan siendo pacíficas y limpias. Aguas de brazos abiertos. Las jorobadas eran perseverantes para no perder sus raíces. Raíces que compartimos con ellas. Ellas son nuestro espejo en el mar. 
-      </p>
-    `;
-
-    panel.classList.add('mostrar');
-    panel.style.background = 'rgba(10, 25, 47, 0.7)';
-    panel.style.border = '2px solid rgba(0, 229, 255, 0.3)';
-    panel.style.boxShadow = '0 0 25px rgba(0, 229, 255, 0.4)';
-    panel.style.borderRadius = '20px';
-    panel.style.padding = '30px';
-    panel.style.transition = 'all 0.5s ease';
-  });
-
-  // 🟪 BOTÓN AUTORES (si existe)
-  if (btnAutores) {
-    btnAutores.addEventListener('click', () => {
-      contenido.innerHTML = `
-        <h2 style="
-          color: rgba(243, 146, 0, 1);
-          font-family: 'Poppins', sans-serif;
-          font-size: 1.5rem;
-          text-align: center;
-          margin-bottom: 15px;
-        ">Autores</h2>
-        <p style="
-          font-size: 1.1rem;
-          line-height: 1.6;
-          text-align: justify;
-          color: #E0F7FA;
-          font-family: 'Open Sans', sans-serif;
-        ">
-          <span style="font-weight: bold; color:#FFD84D">Sobre la autora y el ilustrador</span><br><br>
-          La autora de *El vuelo de las jorobadas* se llama Catalina Toro Restrepo. Ella es una escritora colombiana apasionada por la naturaleza y el mar. 
-          Catalina escribió este libro para contarnos la gran aventura de las ballenas jorobadas en su viaje desde las frías aguas del sur hasta el cálido océano colombiano.
-          <br><br>
-          El ilustrador, José Rosero, usa los colores y las formas para dar vida a las historias. Sus dibujos llenan las páginas de movimiento y emoción.
-          <br><br>
-          Juntos, Catalina y José crearon un libro hermoso que invita a soñar, aprender y amar la naturaleza.
-        </p>
-      `;
-
-      panel.classList.add('mostrar');
-      panel.style.background = 'rgba(163, 25, 91, 0.7)';
-      panel.style.border = '2px solid rgba(255, 102, 204, 0.4)';
-      panel.style.boxShadow = '0 0 20px rgba(243, 146, 0, 1)';
-      panel.style.borderRadius = '20px';
-      panel.style.padding = '30px';
-      panel.style.transition = 'all 0.5s ease';
+  // 🟣 Cerrar panel
+  const cerrarPanel = document.getElementById("cerrarPanel");
+  if (cerrarPanel) {
+    cerrarPanel.addEventListener("click", () => {
+      document.getElementById("panelInfo").classList.remove("mostrar");
     });
   }
 
-  // 🟥 BOTÓN DE CIERRE “X”
-  cerrar.addEventListener('click', () => {
-    panel.classList.remove('mostrar');
-    // opcional: limpiar contenido si quieres
-    // contenido.innerHTML = "";
+  // ⚡ Redirigir clics del canvas de MindAR al raycaster
+  const reenviarClickDesdeCanvas = () => {
+    const canvas = document.querySelector("canvas");
+    if (!canvas) return;
+
+    // Por defecto MindAR pone pointer-events: auto
+    canvas.style.pointerEvents = "auto";
+
+    // Captura clics sobre el video o canvas y dispara el raycaster manualmente
+    canvas.addEventListener("mousedown", () => {
+      manejarClickRaycaster();
+    });
+    canvas.addEventListener("touchstart", () => {
+      manejarClickRaycaster();
+    });
+
+    console.log("✅ Canvas MindAR listo para reenviar clics.");
+  };
+
+  // ⚙️ Cuando la escena carga
+  scene.addEventListener("loaded", () => {
+    setTimeout(() => {
+      refrescarRaycaster();
+      reenviarClickDesdeCanvas();
+    }, 1000);
   });
 });
 </script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sceneEl = document.querySelector("a-scene");
+  if (!sceneEl) return console.error("No se encontró <a-scene>");
+
+  // Espera a que la escena A-Frame esté lista y tenga cámara/renderer
+  sceneEl.addEventListener("loaded", () => {
+    const threeCamera = sceneEl.camera; // THREE.Camera
+    const renderer = sceneEl.renderer;
+    if (!threeCamera || !renderer) {
+      console.error("Cámara o renderer no disponibles aún.");
+      return;
+    }
+
+    const raycaster = new AFRAME.THREE.Raycaster();
+    const mouse = new AFRAME.THREE.Vector2();
+
+    // Devuelve el <canvas> utilizado por A-Frame / MindAR
+    const canvas = renderer.domElement;
+
+    // Obtiene lista de entidades clickeables (actualiza dinámicamente)
+    function getClickableEntities() {
+      return Array.from(document.querySelectorAll(".clickable"))
+        .filter(el => el.object3D); // asegurarnos de que tengan object3D
+    }
+
+    // Convierte evento (mouse o touch) a coordenadas NDC (-1..1)
+    function eventToNDC(ev) {
+      const rect = canvas.getBoundingClientRect();
+      let clientX, clientY;
+      if (ev.touches && ev.touches.length) {
+        clientX = ev.touches[0].clientX;
+        clientY = ev.touches[0].clientY;
+      } else {
+        clientX = ev.clientX;
+        clientY = ev.clientY;
+      }
+      const x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((clientY - rect.top) / rect.height) * 2 + 1;
+      return { x, y };
+    }
+
+    // Dado un intersection.object (THREE.Object3D), subir padres hasta encontrar `el`
+    function getEntityFromObject3D(obj) {
+      while (obj) {
+        if (obj.el) return obj.el;
+        obj = obj.parent;
+      }
+      return null;
+    }
+
+    // Raycast manual y manejo del primer objeto intersectado
+    function doRaycastAndHandle(ndc) {
+      mouse.set(ndc.x, ndc.y);
+      raycaster.setFromCamera(mouse, threeCamera);
+
+      // Construir lista de objetos raíz para intersectObjects
+      const clickable = getClickableEntities();
+      if (clickable.length === 0) return;
+
+      const objects = clickable.map(el => el.object3D);
+      // intersectObjects acepta array de objetos y recursivo = true
+      const intersections = raycaster.intersectObjects(objects, true);
+
+      if (intersections && intersections.length) {
+        // Tomar la intersección más cercana
+        const first = intersections[0];
+        const hitEl = getEntityFromObject3D(first.object);
+        if (hitEl && hitEl.classList && hitEl.classList.contains("clickable")) {
+          // Acción al clicar el modelo (mantén tu lógica aquí)
+          console.log("✅ Modelo clickeado (raycast):", hitEl.id || hitEl.tagName);
+
+          // Mostrar panel (manteniendo tu UI)
+          const panel = document.getElementById("panelInfo");
+          const contenido = document.getElementById("contenidoPanel");
+          contenido.innerHTML = `
+            <h2 style="text-align:center;">${hitEl.id || "Modelo"}</h2>
+            <p style="color:#e0f7fa;">Has hecho clic en ${hitEl.id || "un modelo"}.</p>
+          `;
+          panel.classList.add("mostrar");
+
+          // Evitar que el click "caiga" en otros listeners
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // Handler unificado para mousedown / touchstart
+    function onPointerDown(ev) {
+      try {
+        const ndc = eventToNDC(ev);
+        const handled = doRaycastAndHandle(ndc);
+        if (handled) {
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+      } catch (err) {
+        console.error("Error en raycast:", err);
+      }
+    }
+
+    // Escuchar tanto sobre el canvas como a nivel ventana (por si MindAR intercepta)
+    canvas.addEventListener("mousedown", onPointerDown, { passive: false });
+    canvas.addEventListener("touchstart", onPointerDown, { passive: false });
+
+    // Backup: también ventana (útil en algunos navegadores)
+    window.addEventListener("mousedown", onPointerDown, { passive: false });
+    window.addEventListener("touchstart", onPointerDown, { passive: false });
+
+    // Cuando modelos cambien de visibilidad (cuando targetFound), refrescamos log para debug
+    const target = document.querySelector("#target");
+    if (target) {
+      target.addEventListener("targetFound", () => {
+        console.log("📸 targetFound -> actualizando lista de clickeables:", getClickableEntities().map(e=>e.id));
+      });
+    }
+
+    console.log("🔦 Raycast manual listo (THREE.Raycaster).");
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   </body>
